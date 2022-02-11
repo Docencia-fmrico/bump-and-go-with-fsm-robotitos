@@ -33,7 +33,7 @@ BumpGo::BumpGo()
 void
 BumpGo::bumperCallback(const kobuki_msgs::BumperEvent::ConstPtr& msg)
 {
-  // pressed_ = (...);
+   pressed_ = msg->state;
   //  ...
 }
 
@@ -48,7 +48,7 @@ BumpGo::step()
       // cmd.linear.x = ...;
       // cmd.angular.z = ...;
 
-      if (pressed_)ç
+      if (pressed_)
       {
         press_ts_ = ros::Time::now();
         state_ = GOING_BACK;
@@ -57,8 +57,8 @@ BumpGo::step()
 
       break;
     case GOING_BACK:
-      // cmd.linear.x = ...;
-      // cmd.angular.z = ...;
+      cmd.linear.x = 0.4;
+      cmd.angular.z = 0.0;
 
       if ((ros::Time::now() - press_ts_).toSec() > BACKING_TIME )
       {
