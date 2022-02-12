@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef FSM_BUMP_GO_BUMPGO_ADV__H
+#ifndef FSM_BUMP_GO_BUMPGO_ADV_H
 #define FSM_BUMP_GO_BUMPGO_ADV_H
 
 #include "ros/ros.h"
