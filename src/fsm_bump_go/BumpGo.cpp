@@ -79,7 +79,7 @@ BumpGo::step()
       break;
     case TURNING:
       cmd.linear.x = 0.0;
-      cmd.angular.z = 0.3;
+      cmd.angular.z = 0.5;
 
 
       if ((ros::Time::now()-turn_ts_).toSec() > TURNING_TIME )
