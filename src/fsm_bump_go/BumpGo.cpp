@@ -28,6 +28,7 @@ BumpGo::BumpGo()
 {
   sub_bumber_ = n_.subscribe("/mobile_base/events/bumper",1,&BumpGo::bumperCallback,this);
   pub_vel_ = n_.advertise<geometry_msgs::Twist>("mobile_base/commands/velocity", 1);
+
 }
 
 void
@@ -41,7 +42,7 @@ BumpGo::bumperCallback(const kobuki_msgs::BumperEvent::ConstPtr& msg)
   {
     pressed_ = false;
   }
-   
+
   //  ...
 }
 
@@ -79,6 +80,7 @@ BumpGo::step()
     case TURNING:
       cmd.linear.x = 0.0;
       cmd.angular.z = 0.3;
+
 
       if ((ros::Time::now()-turn_ts_).toSec() > TURNING_TIME )
       {
