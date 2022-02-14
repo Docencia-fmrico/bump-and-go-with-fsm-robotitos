@@ -31,27 +31,27 @@ public:
     BumpGoPro();
 
     void laserCallBack();
-    void step();
+    
 
 private:
-    ros::NodeHandle n_;
+  ros::NodeHandle n_;
 
   static const int GOING_FORWARD   = 0;
   static const int GOING_BACK = 1;
   static const int TURNING_LEFT = 2;
   static const int TURNING_RIGHT = 3;
-  static const int LEFT_NEAR = 0;
-  static const int RIGHT_NEAR = 1;
+  static const int LEFT_PRESSED = 0;
+  static const int RIGHT_PRESSED = 1;
 
   static constexpr double TURNING_TIME = 3.0;
   static constexpr double BACKING_TIME = 3.0;
 
   int state_;
 
-  bool nearby_;
-  int nearby_state_;
+  bool pressed_;
+  int pressed_state_;
 
-  ros::Time nearby_ts_;
+  ros::Time pressed_ts_;
   ros::Time turn_ts_;
 
   ros::Subscriber sub_laser_;
