@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "fsm_bump_go/BumpGo.h"
+#include "fsm_bump_go/BumpGoAdv.h"
 
 #include "kobuki_msgs/BumperEvent.h"
 #include "geometry_msgs/Twist.h"
@@ -22,25 +22,18 @@
 namespace fsm_bump_go
 {
 
-BumpGo::BumpGo()
+BumpGoAdv::BumpGoAdv()
 : state_(GOING_FORWARD),
   pressed_(false)
 {
-  sub_bumber_ = n_.subscribe("/mobile_base/events/bumper",1,&BumpGo::bumperCallback,this);
+  sub_bumper_ = n_.subscribe("/mobile_base/events/bumper",1,&BumpGoAdv::bumperCallback,this);
   pub_vel_ = n_.advertise<geometry_msgs::Twist>("mobile_base/commands/velocity", 1);
 
 }
 
 void
-BumpGo::bumperCallback(const kobuki_msgs::BumperEvent::ConstPtr& msg)
+BumpGoAdv::bumperCallback(const kobuki_msgs::BumperEvent::ConstPtr& msg)
 {
-<<<<<<< HEAD
-  if (msg->state == msg->PRESSED) {
-    pressed_ = 1;
-  } else {
-    pressed_ = 0;
-  }
-=======
   if (msg->state == msg->PRESSED)
   {
     pressed_ = true;
@@ -50,12 +43,24 @@ BumpGo::bumperCallback(const kobuki_msgs::BumperEvent::ConstPtr& msg)
     pressed_ = false;
   }
 
+  if (msg->bumper == msg->LEFT)
+  {
+    pressed_state_ = LEFT_PRESSED;
+  }
+  else if (msg->bumper == msg->CENTER)
+  {
+    pressed_state_ = LEFT_PRESSED;
+  }
+  else
+  {
+    pressed_state_ = RIGHT_PRESSED;
+  }
+
   //  ...
->>>>>>> 37e60bb64e673e35ce789c793968442542abb5be
 }
 
 void
-BumpGo::step()
+BumpGoAdv::step()
 {
   geometry_msgs::Twist cmd;
 
@@ -80,12 +85,20 @@ BumpGo::step()
       if ((ros::Time::now() - press_ts_).toSec() > BACKING_TIME )
       {
         turn_ts_ = ros::Time::now();
-        state_ = TURNING;
-        ROS_INFO("GOING_BACK -> TURNING");
+        if (pressed_state_ == RIGHT_PRESSED)
+        {
+          state_ = TURNING_LEFT;
+          ROS_INFO("GOING_BACK -> TURNING_LEFT");
+        }
+        else
+        {
+          state_ = TURNING_RIGHT;
+          ROS_INFO("GOING_BACK -> TURNING_RIGHT");
+        }
       }
 
       break;
-    case TURNING:
+    case TURNING_LEFT:
       cmd.linear.x = 0.0;
       cmd.angular.z = 0.5;
 
@@ -93,7 +106,18 @@ BumpGo::step()
       if ((ros::Time::now()-turn_ts_).toSec() > TURNING_TIME )
       {
         state_ = GOING_FORWARD;
-        ROS_INFO("TURNING -> GOING_FORWARD");
+        ROS_INFO("TURNING_LEFT -> GOING_FORWARD");
+      }
+      break;
+    case TURNING_RIGHT:
+      cmd.linear.x = 0.0;
+      cmd.angular.z = -0.5;
+
+
+      if ((ros::Time::now()-turn_ts_).toSec() > TURNING_TIME )
+      {
+        state_ = GOING_FORWARD;
+        ROS_INFO("TURNING_RIGHT -> GOING_FORWARD");
       }
       break;
     }
@@ -102,3 +126,4 @@ BumpGo::step()
 }
 
 }  // namespace fsm_bump_go
+ 

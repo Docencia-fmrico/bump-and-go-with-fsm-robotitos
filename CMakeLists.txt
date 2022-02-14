@@ -20,13 +20,20 @@ include_directories(
 
 add_library(${PROJECT_NAME}
   src/fsm_bump_go/BumpGo.cpp
+  src/fsm_bump_go/BumpGoAdv.cpp
 )
 
 add_executable(bumpgo_node src/bumpgo_node.cpp)
 target_link_libraries(bumpgo_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 
+add_executable(bumpgoadv_node src/bumpgoadv_node.cpp)
+target_link_libraries(bumpgoadv_node ${catkin_LIBRARIES} ${PROJECT_NAME})
+
 roslint_cpp(
  src/bumpgo_node.cpp
  src/fsm_bump_go/BumpGo.cpp
  include/fsm_bump_go/BumpGo.h
+ src/bumpgoadv_node.cpp
+ src/fsm_bump_go/BumpGoAdv.cpp
+ include/fsm_bump_go/BumpGoAdv.h
 )
