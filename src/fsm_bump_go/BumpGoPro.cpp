@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "fsm_bump_go/BumpGoAdv.h"
 #include "fsm_bump_go/BumpGoPro.h"
 
 #include "kobuki_msgs/BumperEvent.h"
@@ -23,17 +22,17 @@
 namespace fsm_bump_go
 {
 
-BumpGoAdv::BumpGoAdv()
+BumpGoPro::BumpGoPro()
 : state_(GOING_FORWARD),
   pressed_(false)
 {
-  sub_bumper_ = n_.subscribe("/mobile_base/events/bumper",1,&BumpGoAdv::bumperCallback,this);
+  sub_laser_ = n_.subscribe("/mobile_base/events/bumper",1,&BumpGoPro::laserCallBack,this);
   pub_vel_ = n_.advertise<geometry_msgs::Twist>("mobile_base/commands/velocity", 1);
 
 }
 
 void
-BumpGoAdv::bumperCallback(const kobuki_msgs::BumperEvent::ConstPtr& msg)
+BumpGoPro::laserCallBack(const kobuki_msgs::BumperEvent::ConstPtr& msg)
 {
   if (msg->state == msg->PRESSED)
   {

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #include "fsm_bump_go/BumpGoPro.h"
-#include "fsm_bump_go/BumpGoAdv.h"
 
 #include "ros/ros.h"
 

@@ -30,10 +30,15 @@ class BumpGoPro : public BumpGoAdv
 public:
     BumpGoPro();
 
-    void laserCallBack();
+    void laserCallBack(const kobuki_msgs::BumperEvent::ConstPtr& msg);
     
 
 private:
+  int state_;
+
+  bool pressed_;
+  int pressed_state_;
+
   ros::NodeHandle n_;
 
   ros::Time pressed_ts_;
