@@ -34,24 +34,11 @@ BumpGo::BumpGo()
 void
 BumpGo::bumperCallback(const kobuki_msgs::BumperEvent::ConstPtr& msg)
 {
-<<<<<<< HEAD
   if (msg->state == msg->PRESSED) {
     pressed_ = 1;
   } else {
     pressed_ = 0;
   }
-=======
-  if (msg->state == msg->PRESSED)
-  {
-    pressed_ = true;
-  }
-  else
-  {
-    pressed_ = false;
-  }
-
-  //  ...
->>>>>>> 37e60bb64e673e35ce789c793968442542abb5be
 }
 
 void
