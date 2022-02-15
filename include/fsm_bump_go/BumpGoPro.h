@@ -16,22 +16,22 @@
 #define FSM_BUMP_GO_BUMPGO_PRO_H
 
 #include "ros/ros.h"
-#include "BumpGoAdv.h"
 
-#include "kobuki_msgs/BumperEvent.h"
 #include "sensor_msgs/LaserScan.h"
 #include "geometry_msgs/Twist.h"
+
+#define SECURITY_DISTANCE 0.3
 
 namespace fsm_bump_go
 {
 
-class BumpGoPro : public BumpGoAdv
+class BumpGoPro
 {
 public:
     BumpGoPro();
 
-    void laserCallBack(const kobuki_msgs::BumperEvent::ConstPtr& msg);
-    
+    void laserCallBack(const sensor_msgs::LaserScan::ConstPtr& laser);
+    void step();
 
 private:
 
@@ -39,20 +39,25 @@ private:
   static const int GOING_BACK = 1;
   static const int TURNING_LEFT = 2;
   static const int TURNING_RIGHT = 3;
-  static const int LEFT_PRESSED = 0;
-  static const int RIGHT_PRESSED = 1;
+  static const int LEFT_DETECTED = 0;
+  static const int RIGHT_DETECTED = 1;
+  static const int CENTER_DETECTED = 2;
+
+  double center_dist = SECURITY_DISTANCE + 0.1;
+  double right_dist = SECURITY_DISTANCE + 0.1;
+  double left_dist = SECURITY_DISTANCE + 0.1;
 
   static constexpr double TURNING_TIME = 3.0;
   static constexpr double BACKING_TIME = 3.0;
 
   int state_;
 
-  bool pressed_;
-  int pressed_state_;
+  bool obstacle_detected_;
+  int obstacle_state_;
 
   ros::NodeHandle n_;
 
-  ros::Time pressed_ts_;
+  ros::Time detected_ts_;
   ros::Time turn_ts_;
 
   ros::Subscriber sub_laser_;
