@@ -32,7 +32,6 @@ public:
   void step();
 
 private:
-  ros::NodeHandle n_;
 
   static const int GOING_FORWARD = 0;
   static const int GOING_BACK = 1;
