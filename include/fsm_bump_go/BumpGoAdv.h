@@ -34,7 +34,7 @@ public:
 private:
   ros::NodeHandle n_;
 
-  static const int GOING_FORWARD   = 0;
+  static const int GOING_FORWARD = 0;
   static const int GOING_BACK = 1;
   static const int TURNING_LEFT = 2;
   static const int TURNING_RIGHT = 3;
@@ -49,6 +49,8 @@ private:
   bool pressed_;
   int pressed_state_;
 
+  ros::NodeHandle n_;
+  
   ros::Time press_ts_;
   ros::Time turn_ts_;
 

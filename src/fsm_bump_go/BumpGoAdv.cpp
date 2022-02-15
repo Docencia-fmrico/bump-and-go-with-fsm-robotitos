@@ -56,7 +56,6 @@ BumpGoAdv::bumperCallback(const kobuki_msgs::BumperEvent::ConstPtr& msg)
     pressed_state_ = RIGHT_PRESSED;
   }
 
-  //  ...
 }
 
 void
