@@ -12,54 +12,60 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "fsm_bump_go/BumpGoAdv.h"
+#include "fsm_bump_go/BumpGoPro.h"
 
 #include "kobuki_msgs/BumperEvent.h"
 #include "geometry_msgs/Twist.h"
 
 #include "ros/ros.h"
+#include <cmath>    //For M_PI macro.
 
 namespace fsm_bump_go
 {
 
-BumpGoAdv::BumpGoAdv()
+BumpGoPro::BumpGoPro()
 : state_(GOING_FORWARD),
-  pressed_(false)
+  obstacle_detected_(false)
 {
-  sub_bumper_ = n_.subscribe("/mobile_base/events/bumper",1,&BumpGoAdv::bumperCallback,this);
+  sub_laser_ = n_.subscribe("/scan",1,&BumpGoPro::laserCallBack,this);
   pub_vel_ = n_.advertise<geometry_msgs::Twist>("mobile_base/commands/velocity", 1);
 
 }
 
 void
-BumpGoAdv::bumperCallback(const kobuki_msgs::BumperEvent::ConstPtr& msg)
+BumpGoPro::laserCallBack(const sensor_msgs::LaserScan::ConstPtr& laser)
 {
-  if (msg->state == msg->PRESSED)
+  int center = (0 - laser->angle_min) / laser->angle_increment;
+  int left = (M_PI/5 - laser->angle_min) / laser->angle_increment;
+  int right = (-M_PI/5 - laser->angle_min) / laser->angle_increment;
+
+  center_dist = laser->ranges[center];
+  right_dist = laser->ranges[right];
+  left_dist = laser->ranges[left];
+
+  if (left_dist < SECURITY_DISTANCE)
   {
-    pressed_ = true;
+    obstacle_state_ = LEFT_DETECTED;
+    obstacle_detected_ = true;
+  }
+  else if (center_dist < SECURITY_DISTANCE)
+  {
+    obstacle_state_ = CENTER_DETECTED;
+    obstacle_detected_ = true;
+  }
+  else if (right_dist < SECURITY_DISTANCE)
+  {
+    obstacle_state_ = RIGHT_DETECTED;
+    obstacle_detected_ = true;
   }
   else
   {
-    pressed_ = false;
+    obstacle_detected_ = false;
   }
-
-  if (msg->bumper == msg->LEFT)
-  {
-    pressed_state_ = LEFT_PRESSED;
-  }
-  else if (msg->bumper == msg->CENTER)
-  {
-    pressed_state_ = LEFT_PRESSED;
-  }
-  else
-  {
-    pressed_state_ = RIGHT_PRESSED;
-  }
-
 }
 
 void
-BumpGoAdv::step()
+BumpGoPro::step()
 {
   geometry_msgs::Twist cmd;
 
@@ -69,9 +75,9 @@ BumpGoAdv::step()
       cmd.linear.x = 0.1;
       cmd.angular.z = 0.0;
 
-      if (pressed_)
+      if (obstacle_detected_)
       {
-        press_ts_ = ros::Time::now();
+        detected_ts_ = ros::Time::now();
         state_ = GOING_BACK;
         ROS_INFO("GOING_FORWARD -> GOING_BACK");
       }
@@ -81,10 +87,10 @@ BumpGoAdv::step()
       cmd.linear.x = -0.1;
       cmd.angular.z = 0.0;
 
-      if ((ros::Time::now() - press_ts_).toSec() > BACKING_TIME )
+      if ((ros::Time::now() - detected_ts_).toSec() > BACKING_TIME )
       {
         turn_ts_ = ros::Time::now();
-        if (pressed_state_ == RIGHT_PRESSED)
+        if (obstacle_state_ == RIGHT_DETECTED)
         {
           state_ = TURNING_LEFT;
           ROS_INFO("GOING_BACK -> TURNING_LEFT");
@@ -125,4 +131,3 @@ BumpGoAdv::step()
 }
 
 }  // namespace fsm_bump_go
- 
