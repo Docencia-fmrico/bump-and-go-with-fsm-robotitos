@@ -31,8 +31,6 @@ public:
   void bumperCallback(const kobuki_msgs::BumperEvent::ConstPtr& msg);
   void step();
 
-private:
-
   static const int GOING_FORWARD = 0;
   static const int GOING_BACK = 1;
   static const int TURNING_LEFT = 2;
@@ -42,6 +40,8 @@ private:
 
   static constexpr double TURNING_TIME = 3.0;
   static constexpr double BACKING_TIME = 3.0;
+
+private:
 
   int state_;
 
@@ -55,6 +55,7 @@ private:
 
   ros::Subscriber sub_bumper_;
   ros::Publisher pub_vel_;
+
 };
 
 }  // namespace fsm_bump_go
