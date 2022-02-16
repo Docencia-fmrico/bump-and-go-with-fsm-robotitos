@@ -22,6 +22,7 @@ add_library(${PROJECT_NAME}
   src/fsm_bump_go/BumpGo.cpp
   src/fsm_bump_go/BumpGoAdv.cpp
   src/fsm_bump_go/BumpGoPro.cpp
+  src/fsm_bump_go/BumpGoProHer.cpp
 )
 
 add_executable(bumpgo_node src/bumpgo_node.cpp)
@@ -33,6 +34,9 @@ target_link_libraries(bumpgoadv_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 add_executable(bumpgopro_node src/bumpgopro_node.cpp)
 target_link_libraries(bumpgopro_node ${catkin_LIBRARIES} ${PROJECT_NAME})
 
+add_executable(bumpgoproher_node src/bumpgoproher_node.cpp)
+target_link_libraries(bumpgoproher_node ${catkin_LIBRARIES} ${PROJECT_NAME})
+
 roslint_cpp(
  src/bumpgo_node.cpp
  src/fsm_bump_go/BumpGo.cpp
@@ -43,4 +47,7 @@ roslint_cpp(
  src/bumpgopro_node.cpp
  src/fsm_bump_go/BumpGoPro.cpp
  include/fsm_bump_go/BumpGoPro.h
+ src/bumpgoproher_node.cpp
+ src/fsm_bump_go/BumpGoProHer.cpp
+ include/fsm_bump_go/BumpGoProHer.h
 )

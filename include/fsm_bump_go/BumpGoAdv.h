@@ -37,12 +37,9 @@ public:
   static const int TURNING_RIGHT = 3;
   static const int LEFT_PRESSED = 0;
   static const int RIGHT_PRESSED = 1;
-
   static constexpr double TURNING_TIME = 3.0;
   static constexpr double BACKING_TIME = 3.0;
-
 private:
-
   int state_;
 
   bool pressed_;
@@ -52,9 +49,9 @@ private:
   
   ros::Time press_ts_;
   ros::Time turn_ts_;
-
-  ros::Subscriber sub_bumper_;
   ros::Publisher pub_vel_;
+  ros::Subscriber sub_bumper_;
+  
 
 };
 
