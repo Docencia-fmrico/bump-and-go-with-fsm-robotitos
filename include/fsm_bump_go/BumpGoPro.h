@@ -20,7 +20,7 @@
 #include "sensor_msgs/LaserScan.h"
 #include "geometry_msgs/Twist.h"
 
-#define SECURITY_DISTANCE 0.3
+#define SECURITY_DISTANCE 0.35
 
 namespace fsm_bump_go
 {

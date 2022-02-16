@@ -36,33 +36,31 @@ void
 BumpGoPro::laserCallBack(const sensor_msgs::LaserScan::ConstPtr& laser)
 {
   int center = (0 - laser->angle_min) / laser->angle_increment;
-  int right = (M_PI/5 - laser->angle_min) / laser->angle_increment;
-  int left = (-M_PI/5 - laser->angle_min) / laser->angle_increment;
+  int left = (M_PI/5 - laser->angle_min) / laser->angle_increment;
+  int right = (-M_PI/5 - laser->angle_min) / laser->angle_increment;
 
   center_dist = laser->ranges[center];
   right_dist = laser->ranges[right];
   left_dist = laser->ranges[left];
 
-  if (center_dist < SECURITY_DISTANCE || right_dist < SECURITY_DISTANCE || left_dist < SECURITY_DISTANCE)
+  if (left_dist < SECURITY_DISTANCE)
   {
+    obstacle_state_ = LEFT_DETECTED;
+    obstacle_detected_ = true;
+  }
+  else if (center_dist < SECURITY_DISTANCE)
+  {
+    obstacle_state_ = CENTER_DETECTED;
+    obstacle_detected_ = true;
+  }
+  else if (right_dist < SECURITY_DISTANCE)
+  {
+    obstacle_state_ = RIGHT_DETECTED;
     obstacle_detected_ = true;
   }
   else
   {
     obstacle_detected_ = false;
-  }
-
-  if (left_dist < SECURITY_DISTANCE)
-  {
-    obstacle_state_ = LEFT_DETECTED;
-  }
-  else if (center_dist < SECURITY_DISTANCE)
-  {
-    obstacle_state_ = CENTER_DETECTED;
-  }
-  else if (right_dist < SECURITY_DISTANCE)
-  {
-    obstacle_state_ = RIGHT_DETECTED;
   }
 }
 
