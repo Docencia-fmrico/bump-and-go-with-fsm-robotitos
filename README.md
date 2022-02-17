@@ -11,6 +11,7 @@ Primera Práctica del grupo **Robotitos** de Arquitectura Robótica Software.
 * [Francisco Gómez López](f.gomezl.2019@alumnos.urjc.es)
 
 ## Indice:
+
 ### 1. Introducción.
 ### 2. BumpGo Básico.
 ### 3. BumpGo Avanzado.
@@ -23,6 +24,8 @@ Este proyecto consistirá en hacer uso del bumper y del laser del robot Kobuki p
 El robot *Kobuki* se puede visualizar en esta imagen:
 ![KOBUKI](https://github.com/javilleira2019/sensoresactuadores2021-22/blob/master/kobuki.jpg)
 
+Para desarrollarlo de forma remota se ha utilizado el simulador **Gazebo**, el cual nos permite crear un escenario con un *kobuki* y trabajar con él.
+Un ejemplo de uso sería [este](https://urjc-my.sharepoint.com/:v:/g/personal/j_avilleira_2019_alumnos_urjc_es/Ec9YREroNwhJhvsgUpefydMBD2rz0gI6Pkphi3F4USkKjg).
 
 ## BumpGo Básico.
 
