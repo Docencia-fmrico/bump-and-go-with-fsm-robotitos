@@ -35,9 +35,9 @@ BumpGoPro::BumpGoPro()
 void
 BumpGoPro::laserCallBack(const sensor_msgs::LaserScan::ConstPtr& laser)
 {
-  int center = (0 - laser->angle_min) / laser->angle_increment;
-  int left = (M_PI/5 - laser->angle_min) / laser->angle_increment;
-  int right = (-M_PI/5 - laser->angle_min) / laser->angle_increment;
+  int center =  0;
+  int left = 700;
+  int right = 150;
 
   center_dist = laser->ranges[center];
   right_dist = laser->ranges[right];
