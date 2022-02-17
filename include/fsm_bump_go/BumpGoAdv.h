@@ -39,11 +39,13 @@ public:
   static const int RIGHT_PRESSED = 1;
   static constexpr double TURNING_TIME = 3.0;
   static constexpr double BACKING_TIME = 3.0;
-private:
+protected:
   int state_;
 
   bool pressed_;
   int pressed_state_;
+
+private:
 
   ros::NodeHandle n_;
   

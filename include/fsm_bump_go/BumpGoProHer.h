@@ -46,10 +46,6 @@ private:
   static constexpr double TURNING_TIME = 3.0;
   static constexpr double BACKING_TIME = 3.0;
 
-  int state_;
-  
-  bool pressed_;
-  int pressed_state_;
 
   ros::NodeHandle n_;
 
