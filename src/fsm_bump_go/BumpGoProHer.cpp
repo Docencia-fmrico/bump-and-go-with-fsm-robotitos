@@ -46,12 +46,12 @@ BumpGoProHer::laserCallBack(const sensor_msgs::LaserScan::ConstPtr& laser)
 
   
 
-  if (left_dist < SECURITY_DISTANCE || center_dist < SECURITY_DISTANCE)
+  if (left_dist < SECURITY_DISTANCE || center_dist < SECURITY_DISTANCE || std::isnan(left_dist)|| std::isnan(center_dist))
   {
     pressed_state_ = LEFT_DETECTED;
     pressed_ = true;
   }
-  else if (right_dist < SECURITY_DISTANCE)
+  else if (right_dist < SECURITY_DISTANCE || std::isnan(right_dist))
   {
     pressed_state_ = RIGHT_DETECTED;
     pressed_ = true;
