@@ -38,11 +38,11 @@ BumpGoPro::laserCallBack(const sensor_msgs::LaserScan::ConstPtr& laser)
   int center =  0;
   int left = 700;
   int right = 150;
-
+  
   center_dist = laser->ranges[center];
   right_dist = laser->ranges[right];
   left_dist = laser->ranges[left];
-
+  
   if (left_dist < SECURITY_DISTANCE)
   {
     obstacle_state_ = LEFT_DETECTED;
