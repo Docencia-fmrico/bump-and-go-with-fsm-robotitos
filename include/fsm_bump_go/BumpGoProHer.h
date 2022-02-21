@@ -12,46 +12,51 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef FSM_BUMP_GO_BUMPGO_H
-#define FSM_BUMP_GO_BUMPGO_H
+#ifndef FSM_BUMP_GO_BUMPGO_PRO_HER_H
+#define FSM_BUMP_GO_BUMPGO_PRO_HER_H
 
 #include "ros/ros.h"
+#include "BumpGoAdv.h"
 
-#include "kobuki_msgs/BumperEvent.h"
+#include "sensor_msgs/LaserScan.h"
 #include "geometry_msgs/Twist.h"
+#include "kobuki_msgs/BumperEvent.h"
+
+#define SECURITY_DISTANCE 0.35
 
 namespace fsm_bump_go
 {
 
-class BumpGo
+class BumpGoProHer : public BumpGoAdv
 {
 public:
-  BumpGo();
+    BumpGoProHer();
 
-  void bumperCallback(const kobuki_msgs::BumperEvent::ConstPtr& msg);
-  void step();
+    void laserCallBack(const sensor_msgs::LaserScan::ConstPtr& laser);
 
 private:
-  ros::NodeHandle n_;
 
-  static const int GOING_FORWARD   = 0;
-  static const int GOING_BACK = 1;
-  static const int TURNING = 2;
+  static const int LEFT_DETECTED = 0;
+  static const int RIGHT_DETECTED = 1;
+
+  double center_dist = SECURITY_DISTANCE + 0.1;
+  double right_dist = SECURITY_DISTANCE + 0.1;
+  double left_dist = SECURITY_DISTANCE + 0.1;
 
   static constexpr double TURNING_TIME = 3.0;
   static constexpr double BACKING_TIME = 3.0;
 
-  int state_;
 
-  bool pressed_;
+  ros::NodeHandle n_;
 
   ros::Time press_ts_;
   ros::Time turn_ts_;
 
-  ros::Subscriber sub_bumber_;
+
+  ros::Subscriber sub_laser_;
   ros::Publisher pub_vel_;
 };
 
-}  // namespace fsm_bump_go
+} // namespace fsm_bump_go
 
-#endif  // FSM_BUMP_GO_BUMPGO_H
+#endif  // FSM_BUMP_GO_BUMPGO_PRO_HER_H
